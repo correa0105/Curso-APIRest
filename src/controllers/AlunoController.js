@@ -3,8 +3,8 @@ import Aluno from '../models/Aluno';
 class AlunoController {
   async index(req, res) {
     const novoAluno = await Aluno.create({
-      nome: 'Mickael',
-      sobrenome: 'Paiva',
+      nome: 'Joao',
+      sobrenome: 'Guilherme',
       idade: 22,
       email: 'emailteste@icloud.com',
       peso: 19,
