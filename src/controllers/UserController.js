@@ -3,7 +3,7 @@ import User from '../models/User';
 class UserController {
   async index(req, res) {
     try {
-      const users = await User.findAll({ attributes: ['id', 'nome', 'email'] });
+      const users = await User.findAll({ attributes: ['id', 'fullname', 'email'] });
       return res.json(users);
     } catch (e) {
       return res.json(null);
@@ -13,8 +13,8 @@ class UserController {
   async store(req, res) {
     try {
       const novoUser = await User.create(req.body);
-      const { id, nome, email } = novoUser;
-      return res.json({ id, nome, email });
+      const { id, fullname, email } = novoUser;
+      return res.json({ id, fullname, email });
     } catch (e) {
       return res.status(400).json({
         errors: e.errors.map((err) => err.message),
@@ -32,8 +32,8 @@ class UserController {
         });
       }
 
-      const { id, nome, email } = user;
-      return res.json({ id, nome, email });
+      const { id, fullname, email } = user;
+      return res.json({ id, fullname, email });
     } catch (e) {
       return res.status(400).json({
         errors: e.errors.map((err) => err.message),
@@ -51,10 +51,10 @@ class UserController {
         });
       }
 
-      const novosDados = await user.update(req.body);
-      const { id, nome, email } = novosDados;
+      const attUser = await user.update(req.body);
+      const { id, fullname, email } = attUser;
 
-      return res.json({ id, nome, email });
+      return res.json({ id, fullname, email });
     } catch (e) {
       return res.status(400).json({
         errors: e.errors.map((err) => err.message),
@@ -75,7 +75,7 @@ class UserController {
       await user.destroy();
 
       return res.json({
-        apagado: true,
+        wiped: true,
       });
     } catch (e) {
       return res.status(400).json({

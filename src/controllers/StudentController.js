@@ -1,10 +1,10 @@
-import Aluno from '../models/Aluno';
+import Student from '../models/Student';
 
-class AlunoController {
+class StudentController {
   async index(req, res) {
     try {
-      const alunos = await Aluno.findAll({ attributes: ['id', 'nome', 'email', 'sobrenome', 'idade', 'peso', 'altura'] });
-      return res.json(alunos);
+      const student = await Student.findAll({ attributes: ['id', 'firstname', 'lastname', 'email', 'age', 'weight', 'height'] });
+      return res.json(student);
     } catch (e) {
       return res.json(null);
     }
@@ -12,12 +12,12 @@ class AlunoController {
 
   async store(req, res) {
     try {
-      const novoAluno = await Aluno.create(req.body);
+      const newStudent = await Student.create(req.body);
       const {
-        id, nome, sobrenome, email, idade, peso, altura,
-      } = novoAluno;
+        id, firstname, lastname, email, age, weight, height,
+      } = newStudent;
       return res.json({
-        id, nome, sobrenome, email, idade, peso, altura,
+        id, firstname, lastname, email, age, weight, height,
       });
     } catch (e) {
       return res.status(400).json({
@@ -28,19 +28,19 @@ class AlunoController {
 
   async show(req, res) {
     try {
-      const aluno = await Aluno.findByPk(req.params.id);
+      const student = await Student.findByPk(req.params.id);
 
-      if (!aluno) {
+      if (!student) {
         return res.status(400).json({
           errors: ['Aluno não encontrado.'],
         });
       }
 
       const {
-        id, nome, sobrenome, email, idade, peso, altura,
-      } = aluno;
+        id, firstname, lastname, email, age, weight, height,
+      } = student;
       return res.json({
-        id, nome, sobrenome, email, idade, peso, altura,
+        id, firstname, lastname, email, age, weight, height,
       });
     } catch (e) {
       return res.status(400).json({
@@ -51,21 +51,21 @@ class AlunoController {
 
   async update(req, res) {
     try {
-      const aluno = await Aluno.findByPk(req.params.id);
+      const student = await Student.findByPk(req.params.id);
 
-      if (!aluno) {
+      if (!student) {
         return res.status(400).json({
           errors: ['Aluno não encontrado'],
         });
       }
 
-      const novosDados = await aluno.update(req.body);
+      const attStudent = await student.update(req.body);
       const {
-        id, nome, sobrenome, email, idade, peso, altura,
-      } = novosDados;
+        id, firstname, lastname, email, age, weight, height,
+      } = attStudent;
 
       return res.json({
-        id, nome, sobrenome, email, idade, peso, altura,
+        id, firstname, lastname, email, age, weight, height,
       });
     } catch (e) {
       return res.status(400).json({
@@ -76,18 +76,18 @@ class AlunoController {
 
   async delete(req, res) {
     try {
-      const aluno = await Aluno.findByPk(req.params.id);
+      const student = await Student.findByPk(req.params.id);
 
-      if (!aluno) {
+      if (!student) {
         return res.status(400).json({
           errors: ['Aluno não encontrado.'],
         });
       }
 
-      await aluno.destroy();
+      await student.destroy();
 
       return res.json({
-        apagado: true,
+        wiped: true,
       });
     } catch (e) {
       return res.status(400).json({
@@ -97,4 +97,4 @@ class AlunoController {
   }
 }
 
-export default new AlunoController();
+export default new StudentController();
