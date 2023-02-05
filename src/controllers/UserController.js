@@ -24,7 +24,7 @@ class UserController {
 
   async show(req, res) {
     try {
-      const user = await User.findByPk(req.params.id);
+      const user = await User.findByPk(req.params.id, { attributes: ['id', 'fullname', 'email'] });
 
       if (!user) {
         return res.status(401).json({
@@ -32,8 +32,7 @@ class UserController {
         });
       }
 
-      const { id, fullname, email } = user;
-      return res.json({ id, fullname, email });
+      return res.json(user);
     } catch (e) {
       return res.status(400).json({
         errors: e.errors.map((err) => err.message),

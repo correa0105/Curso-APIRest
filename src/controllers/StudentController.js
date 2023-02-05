@@ -1,9 +1,17 @@
 import Student from '../models/Student';
+import Photo from '../models/Photo';
 
 class StudentController {
   async index(req, res) {
     try {
-      const student = await Student.findAll({ attributes: ['id', 'firstname', 'lastname', 'email', 'age', 'weight', 'height'] });
+      const student = await Student.findAll({
+        attributes: ['id', 'firstname', 'lastname', 'email', 'age', 'weight', 'height'],
+        order: [['id', 'DESC'], [Photo, 'id', 'DESC']],
+        include: {
+          model: Photo,
+          attributes: ['id', 'filename'],
+        },
+      });
       return res.json(student);
     } catch (e) {
       return res.json(null);
@@ -13,12 +21,9 @@ class StudentController {
   async store(req, res) {
     try {
       const newStudent = await Student.create(req.body);
-      const {
-        id, firstname, lastname, email, age, weight, height,
-      } = newStudent;
-      return res.json({
-        id, firstname, lastname, email, age, weight, height,
-      });
+      const { id, fullname, email } = newStudent;
+
+      return res.json({ id, fullname, email });
     } catch (e) {
       return res.status(400).json({
         errors: e.errors.map((err) => err.message),
@@ -28,7 +33,14 @@ class StudentController {
 
   async show(req, res) {
     try {
-      const student = await Student.findByPk(req.params.id);
+      const student = await Student.findByPk(req.params.id, {
+        attributes: ['id', 'firstname', 'lastname', 'email', 'age', 'weight', 'height'],
+        order: [['id', 'DESC'], [Photo, 'id', 'DESC']],
+        include: {
+          model: Photo,
+          attributes: ['id', 'filename'],
+        },
+      });
 
       if (!student) {
         return res.status(400).json({
@@ -36,12 +48,7 @@ class StudentController {
         });
       }
 
-      const {
-        id, firstname, lastname, email, age, weight, height,
-      } = student;
-      return res.json({
-        id, firstname, lastname, email, age, weight, height,
-      });
+      return res.json(student);
     } catch (e) {
       return res.status(400).json({
         errors: e.errors.map((err) => err.message),
