@@ -9,7 +9,7 @@ class StudentController {
         order: [['id', 'DESC'], [Photo, 'id', 'DESC']],
         include: {
           model: Photo,
-          attributes: ['id', 'filename'],
+          attributes: ['id', 'url', 'filename'],
         },
       });
       return res.json(student);
@@ -21,9 +21,13 @@ class StudentController {
   async store(req, res) {
     try {
       const newStudent = await Student.create(req.body);
-      const { id, fullname, email } = newStudent;
+      const {
+        id, firstname, lastname, email, age, weight, height,
+      } = newStudent;
 
-      return res.json({ id, fullname, email });
+      return res.json({
+        id, firstname, lastname, email, age, weight, height,
+      });
     } catch (e) {
       return res.status(400).json({
         errors: e.errors.map((err) => err.message),
@@ -38,7 +42,7 @@ class StudentController {
         order: [['id', 'DESC'], [Photo, 'id', 'DESC']],
         include: {
           model: Photo,
-          attributes: ['id', 'filename'],
+          attributes: ['id', 'url', 'filename'],
         },
       });
 
