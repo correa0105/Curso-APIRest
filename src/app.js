@@ -3,18 +3,15 @@ import { resolve } from 'path';
 
 dotenv.config();
 
-import './src/database';
-import express from 'express';
+import './database';
 import cors from 'cors';
 import helmet from 'helmet';
-import delay from 'express-delay';
-import homeRoutes from './src/routes/homeRoutes';
-import studentRoutes from './src/routes/studentRoutes';
-import userRoutes from './src/routes/userRoutes';
-import tokenRoutes from './src/routes/tokenRoutes';
-import photoRoutes from './src/routes/photoRoutes';
-
-console.log(resolve(__dirname, 'uploads', 'images'));
+import express from 'express';
+import homeRoutes from './routes/homeRoutes';
+import studentRoutes from './routes/studentRoutes';
+import userRoutes from './routes/userRoutes';
+import tokenRoutes from './routes/tokenRoutes';
+import photoRoutes from './routes/photoRoutes';
 
 const whiteList = [
   'http://34.151.239.26',
@@ -27,7 +24,8 @@ const whiteList = [
   'http://10.0.0.137',
   'http://10.0.0.137:3000',
   'http://10.0.0.137:3001',
-  'http://10.0.0.137:3002'];
+  'http://10.0.0.137:3002',
+  'http://www.infobibos.com.br'];
 
 const corsOptions = {
   origin(origin, cb) {
@@ -48,8 +46,7 @@ class App {
 
   middlewares() {
     this.app.use(cors(corsOptions));
-    this.app.use(helmet({ crossOriginResourcePolicy: false }));
-    this.app.use(delay(1000));
+    this.app.use(helmet());
     this.app.use(express.urlencoded({ extended: true }));
     this.app.use(express.json());
     this.app.use(express.static(resolve(__dirname, 'uploads')));
