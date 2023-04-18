@@ -1,6 +1,6 @@
 import { Router } from 'express';
-import studentController from '../controllers/StudentController';
 
+import studentController from '../controllers/StudentController';
 import loginRequired from '../middlewares/loginRequired';
 
 const router = new Router();

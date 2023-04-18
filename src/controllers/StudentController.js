@@ -12,6 +12,7 @@ class StudentController {
           attributes: ['id', 'url', 'filename'],
         },
       });
+
       return res.json(student);
     } catch (e) {
       return res.json(null);
